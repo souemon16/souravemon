@@ -12,6 +12,7 @@ import { scrollToSection } from "@/lib/utils/scroll";
 import { heroContent } from "@/content/hero";
 import { useIntroComplete } from "@/hooks/useIntroComplete";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { TypewriterRole } from "@/components/hero/TypewriterRole";
 
 export function Hero() {
   const introComplete = useIntroComplete();
@@ -94,8 +95,8 @@ export function Hero() {
             {heroContent.name}
           </h1>
 
-          <p ref={roleRef} className="font-display text-2xl md:text-3xl font-medium text-signal mb-6">
-            {heroContent.role}
+          <p ref={roleRef} className="font-display text-2xl md:text-3xl font-medium text-signal mb-6 min-h-[1.3em]">
+            <TypewriterRole />
           </p>
 
           <p ref={taglineRef} className="font-body text-lg md:text-xl text-secondary max-w-md mx-auto md:mx-0 mb-10">

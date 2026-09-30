@@ -1,5 +1,8 @@
 // FILE: src/components/hero/PhotoSlide.tsx
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 export function PhotoSlide({
   src,
@@ -10,18 +13,23 @@ export function PhotoSlide({
   alt: string;
   priority?: boolean;
 }) {
+  const [error, setError] = useState(false);
+
+  if (error) {
+   "photo not found:@error"
+  }
+
   return (
     <div className="relative h-full w-full">
       <Image
         src={src}
         alt={alt}
         fill
-        // size o baraya rakhsi kintu phone er jonno eta beshi mb khabe
         sizes="(max-width: 768px) 560px, 760px"
-        // image quality kahini korle ekhan theke change kora jabe default 75 ami 90 kore rakhsi
         quality={90}
         priority={priority}
         className="object-cover"
+        onError={() => setError(true)}
       />
     </div>
   );

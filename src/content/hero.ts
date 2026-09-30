@@ -1,7 +1,7 @@
 // FILE: src/content/hero.ts
 
 export const heroContent = {
-  eyebrow: "PORTFOLIO SIGNAL // ONLINE",
+  eyebrow: "PORTFOLIO",
   name: "Sourav Sarker Emon",
   role: "Creative Technologist",
   tagline: "Building the future with code, creativity, and curiosity.",

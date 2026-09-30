@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "@/lib/theme/ThemeProvider";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { soundManager } from "@/lib/sound/soundManager";
 
 interface Particle {
   x: number;
@@ -55,14 +56,15 @@ export function SignalField() {
     let lastPulseTime = 0;
     let lastCometTime = 0;
     let lastScrollY = window.scrollY;
+
+    // Mouse position & velocity tracking
     const mouse = { x: -9999, y: -9999 };
+    let mouseSpeed = 0;
 
     const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const cores = navigator.hardwareConcurrency ?? 4;
     const isLowPower = isCoarsePointer || cores <= 4;
 
-    // Day mode particles/lines need more visual weight to read clearly
-    // against a light background — tuned separately from night mode.
     const dayBoost = theme === "day" ? 1.8 : 1;
 
     function getColors() {
@@ -176,7 +178,7 @@ export function SignalField() {
       const colors = getColors();
       ctx!.clearRect(0, 0, width, height);
 
-      // --- Scroll-reactive impulse (primary mobile interaction) ---
+      // Scroll interaction
       const scrollY = window.scrollY;
       const scrollDelta = scrollY - lastScrollY;
       lastScrollY = scrollY;
@@ -187,11 +189,12 @@ export function SignalField() {
         });
       }
 
-      // --- Particles ---
+      // --- Particles Update ---
       particles.forEach((p) => {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.hypot(dx, dy);
+
         if (dist < 130) {
           const force = (1 - dist / 130) * 0.6;
           p.vx -= (dx / dist) * force;
@@ -224,7 +227,7 @@ export function SignalField() {
       });
       ctx!.globalAlpha = 1;
 
-      // --- Node-to-node connections ---
+      // --- Node Connections ---
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -243,34 +246,48 @@ export function SignalField() {
       }
       ctx!.globalAlpha = 1;
 
-      // --- Cursor / touch as transmitting node ---
+      // --- Cursor Connections & Sound (ACTIVE MOVEMENT ONLY) ---
       if (mouse.x > 0 && mouse.y > 0) {
+        let connectedToParticle = false;
+
         particles.forEach((p) => {
           const dx = mouse.x - p.x;
           const dy = mouse.y - p.y;
           const dist = Math.hypot(dx, dy);
-          if (dist < 160) {
+          if (dist < 150) {
+            connectedToParticle = true;
             ctx!.beginPath();
             ctx!.moveTo(mouse.x, mouse.y);
             ctx!.lineTo(p.x, p.y);
             ctx!.strokeStyle = colors.pulse;
-            ctx!.globalAlpha = Math.min((1 - dist / 160) * 0.26 * dayBoost, 0.6);
+            ctx!.globalAlpha = Math.min((1 - dist / 150) * 0.26 * dayBoost, 0.6);
             ctx!.lineWidth = 0.6;
             ctx!.stroke();
           }
         });
         ctx!.globalAlpha = 1;
+
+        // ONLY trigger audio if mouse is actively moving (> 1.5px per frame) AND connected to particles
+        if (mouseSpeed > 3.5 && connectedToParticle) {
+          soundManager.fieldConnect();
+        }
       }
 
-      // --- Pulse rings ---
+      // Decay mouse speed over frames so sound stops immediately when movement stops
+      mouseSpeed *= 0.85;
+      if (mouseSpeed < 0.1) mouseSpeed = 0;
+
+      // --- Background Visual Pulses (SILENT — no audio) ---
       if (time - lastPulseTime > 3500 && Math.random() < 0.012) {
         const beacons = particles.filter((p) => p.isBeacon);
         if (beacons.length) {
           lastPulseTime = time;
           const b = beacons[Math.floor(Math.random() * beacons.length)];
           spawnPulse(b.x, b.y);
+          // Audio removed for background pulses
         }
       }
+
       pulses.forEach((ring) => {
         ring.radius += 1.1;
         ring.alpha -= 0.008;
@@ -286,11 +303,12 @@ export function SignalField() {
       pulses = pulses.filter((r) => r.alpha > 0 && r.radius < r.maxRadius);
       ctx!.globalAlpha = 1;
 
-      // --- Comet ---
+      // --- Background Comets ---
       if (time - lastCometTime > 13000 && Math.random() < 0.0018) {
         lastCometTime = time;
         spawnComet();
       }
+
       comets.forEach((c) => {
         c.x += c.vx;
         c.y += c.vy;
@@ -320,7 +338,13 @@ export function SignalField() {
       animationId = requestAnimationFrame(step);
     }
 
+    // --- Movement Handlers ---
     function handleMouseMove(e: MouseEvent) {
+      if (mouse.x > 0 && mouse.y > 0) {
+        const dx = e.clientX - mouse.x;
+        const dy = e.clientY - mouse.y;
+        mouseSpeed = Math.hypot(dx, dy);
+      }
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     }
@@ -328,30 +352,37 @@ export function SignalField() {
     function handleMouseLeave() {
       mouse.x = -9999;
       mouse.y = -9999;
+      mouseSpeed = 0;
     }
 
-    // Immediate tap feedback — ping fires the instant a finger touches down,
-    // not only when dragging. This is the primary mobile interaction now.
     function handleTouchStart(e: TouchEvent) {
       if (e.touches.length > 0) {
         const x = e.touches[0].clientX;
         const y = e.touches[0].clientY;
         mouse.x = x;
         mouse.y = y;
+        mouseSpeed = 5; // Give initial touch boost
         spawnPulse(x, y);
+        soundManager.fieldPulse(); // Audio triggers on explicit touch tap
       }
     }
 
     function handleTouchMove(e: TouchEvent) {
       if (e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
+        const x = e.touches[0].clientX;
+        const y = e.touches[0].clientY;
+        const dx = x - mouse.x;
+        const dy = y - mouse.y;
+        mouseSpeed = Math.hypot(dx, dy);
+        mouse.x = x;
+        mouse.y = y;
       }
     }
 
     function handleTouchEnd() {
       mouse.x = -9999;
       mouse.y = -9999;
+      mouseSpeed = 0;
     }
 
     function handleVisibilityChange() {

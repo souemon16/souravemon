@@ -1,25 +1,18 @@
 // FILE: src/content/about.ts
-
-/**
- * TEMPORARY content source — will move to Supabase `about` table in Phase 16–19.
- * Replace the placeholder fields below with your real information whenever ready;
- * no component code needs to change.
- */
 export const aboutContent = {
   eyebrow: "ABOUT",
   heading: "The Signal Behind the Work",
   paragraphs: [
-    "[YOUR BIO — a paragraph or two about who you are, how you got into development/creative work, and what drives you. Replace this placeholder with your real story.]",
-    "[Optional second paragraph — interests, philosophy, or what you're currently focused on.]",
+    "[Bio Pore dimu ekon time nai ]",
   ],
   principles: [
-    { label: "CRAFT", value: "Every detail is intentional." },
-    { label: "CURIOSITY", value: "Always learning, always building." },
-    { label: "CLARITY", value: "Simple systems, thoughtfully made." },
+    { label: "CRAFT", value: "edi pore dimu." },
+    { label: "CURIOSITY", value: "Atar loge edao." },
+    { label: "CLARITY", value: "eidaoo mathay aitase na ekon." },
   ],
   stats: [
-    { label: "Projects Shipped", value: "—" },
-    { label: "Years Building", value: "—" },
-    { label: "Technologies", value: "—" },
+    { label: "Projects Shipped", value: "2" },
+    { label: "Years Building", value: "4+" },
+    { label: "Technologies", value: "10=" },
   ],
 };
