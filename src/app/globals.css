@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-surface-2: var(--bg-surface-2);
+  --color-border: var(--border);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-signal: var(--accent-signal);
+  --color-pulse: var(--accent-pulse);
+  --color-danger: var(--accent-danger);
+
+  --font-display: "Clash Display", sans-serif;
+  --font-body: "Satoshi", "Hind Siliguri", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --ease-signal: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
+
+/* FILE: src/app/globals.css — add inside both theme blocks */
+
+:root[data-theme="night"] {
+  --bg-base: #07080A;
+  --bg-surface: #101216;
+  --bg-surface-2: #16181D;
+  --border: #1E2128;
+  --text-primary: #F5F5F2;
+  --text-secondary: #9A9CA5;
+  --accent-signal: #F0B429;
+  --accent-pulse: #34D0C0;
+  --accent-danger: #E5484D;
+  --field-dot: #A6A8B1;
+}
+
+:root[data-theme="day"] {
+  --bg-base: #FAF8F3;
+  --bg-surface: #FFFFFF;
+  --bg-surface-2: #F2EFE6;
+  --border: #E7E3D9;
+  --text-primary: #14151A;
+  --text-secondary: #5B5D66;
+  --accent-signal: #2B4C7E;
+  --accent-pulse: #0F9488;
+  --accent-danger: #C4292E;
+  --field-dot: #4A4030;
+}
+
+:root {
+  --bg-base: #07080A;
+  --bg-surface: #101216;
+  --bg-surface-2: #16181D;
+  --border: #1E2128;
+  --text-primary: #F5F5F2;
+  --text-secondary: #9A9CA5;
+  --accent-signal: #F0B429;
+  --accent-pulse: #34D0C0;
+  --accent-danger: #E5484D;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: background-color 350ms var(--ease-standard), color 350ms var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes scrollLine {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
