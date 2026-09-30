@@ -12,11 +12,6 @@ export const HeroPortrait = forwardRef<
 >(({ sweepRef, carouselActive }, imageWrapRef) => {
   return (
     <ScanFrame className="w-full max-w-[320px] md:max-w-[380px] mx-auto">
-      {/*
-        Two separate layers now:
-        - outerRef (imageWrapRef): only handles opacity fade-in, never scales pixels
-        - inner content (Carousel/images): always rendered at true 1:1 scale
-      */}
       <div
         ref={imageWrapRef}
         data-hero-image
