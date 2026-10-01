@@ -2,6 +2,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/hero/Hero";
 import { About } from "@/components/about/About";
+import { Skills } from "@/components/skills/Skills";
 import { PlaceholderSection } from "@/components/layout/PlaceholderSection";
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
       <main id="main-content">
         <Hero />
         <About />
-        <PlaceholderSection id="skills" title="Skills" phase="PHASE 06 — UPCOMING" />
+        <Skills />
         <PlaceholderSection id="services" title="Services" phase="PHASE 07 — UPCOMING" />
         <PlaceholderSection id="education" title="Education" phase="PHASE 08 — UPCOMING" />
         <PlaceholderSection id="portfolio" title="Portfolio" phase="PHASE 09 — UPCOMING" />

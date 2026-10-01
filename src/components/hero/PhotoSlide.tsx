@@ -15,9 +15,7 @@ export function PhotoSlide({
 }) {
   const [error, setError] = useState(false);
 
-  if (error) {
-   "photo not found:@error"
-  }
+  if (error) return ;
 
   return (
     <div className="relative h-full w-full">
@@ -25,8 +23,7 @@ export function PhotoSlide({
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 768px) 560px, 760px"
-        quality={90}
+        unoptimized
         priority={priority}
         className="object-cover"
         onError={() => setError(true)}
