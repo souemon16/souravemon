@@ -2,21 +2,9 @@
 "use client";
 
 import {
-  Code2,
-  Braces,
-  FileType,
-  Component,
-  Globe,
-  Wind,
-  Server,
-  Network,
-  Database,
-  Cloud,
-  Sparkles,
-  Activity,
-  Palette,
-  GitBranch,
-  Terminal,
+  Code2, Braces, FileType, Component, Globe, Wind, Server, Network,
+  Database, Cloud, Sparkles, Activity, Palette, GitBranch, Terminal,
+  Clapperboard, PenTool, GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 import { Skill } from "@/content/skills";
@@ -39,6 +27,9 @@ const ICONS: Record<string, LucideIcon> = {
   palette: Palette,
   "git-branch": GitBranch,
   terminal: Terminal,
+  clapperboard: Clapperboard,
+  "pen-tool": PenTool,
+  "graduation-cap": GraduationCap,
 };
 
 export function SkillCard({ skill }: { skill: Skill }) {
