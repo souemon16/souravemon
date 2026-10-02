@@ -17,7 +17,7 @@ const photoSlides = photoFilenames.map((filename, i) => ({
   id: filename,
   node: (
     <PhotoSlide
-      src={`/images/hero/${filename}`}
+      src={`/images/Hero/${filename}`}
       alt="Sourav Sarker Emon"
       priority={i === 0}
     />
