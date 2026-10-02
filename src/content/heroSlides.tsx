@@ -11,7 +11,6 @@ const photoFilenames: string[] = [
   "photo-6.jpeg",
   "photo-7.jpeg",
   "photo-8.jpeg",
-  "photo-9.jpeg",
 ];
 
 const photoSlides = photoFilenames.map((filename, i) => ({
