@@ -15,7 +15,7 @@ export function PhotoSlide({
 }) {
   const [error, setError] = useState(false);
 
-  if (error) return ;
+  if (error) return null;
 
   return (
     <div className="relative h-full w-full">
