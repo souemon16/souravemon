@@ -5,6 +5,7 @@ import { About } from "@/components/about/About";
 import { Skills } from "@/components/skills/Skills";
 import { Services } from "@/components/services/Services";
 import { Education } from "@/components/education/Education";
+import { Portfolio } from "@/components/portfolio/Portfolio";
 import { PlaceholderSection } from "@/components/layout/PlaceholderSection";
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
         <Skills />
         <Services />
         <Education />
-        <PlaceholderSection id="portfolio" title="Portfolio" phase="PHASE 09 — UPCOMING" />
+        <Portfolio />
         <PlaceholderSection id="testimonials" title="Testimonials" phase="PHASE 10 — UPCOMING" />
         <PlaceholderSection id="contact" title="Contact" phase="PHASE 12 — UPCOMING" />
       </main>
