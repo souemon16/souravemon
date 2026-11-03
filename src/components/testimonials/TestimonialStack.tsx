@@ -53,27 +53,38 @@ export function TestimonialStack() {
   const current = ordered[index];
 
   return (
-    <div
+    <motion.div
+      initial="initial"
+      whileHover="hover"
       className="relative mx-auto max-w-xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {/* Tight stack layers — barely peek out, no extra height below */}
-      {ordered.length > 1 && (
+      {/* Zigzag Animated Stack Layers */}
+      {ordered.length > 1 && !prefersReducedMotion && (
         <>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-3 inset-y-0 translate-y-2 rounded-lg border border-border bg-surface/40"
+          <motion.div
+            variants={{
+              initial: { rotate: -2, x: -4, y: 4 },
+              hover: { rotate: -5, x: -16, y: 8 },
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="pointer-events-none absolute inset-0 rounded-lg border border-border bg-surface-2/60 shadow-sm"
           />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-1.5 inset-y-0 translate-y-1 rounded-lg border border-border bg-surface/60"
+          <motion.div
+            variants={{
+              initial: { rotate: 2, x: 4, y: 2 },
+              hover: { rotate: 5, x: 16, y: 6 },
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="pointer-events-none absolute inset-0 rounded-lg border border-border bg-surface-2/80 shadow-sm"
           />
         </>
       )}
 
+      {/* Main Card */}
       <div className="relative">
         <AnimatePresence mode="wait" custom={direction} initial={false}>
           <motion.div
@@ -87,11 +98,9 @@ export function TestimonialStack() {
             className="relative rounded-lg border border-border bg-surface p-6 md:p-8 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)]"
           >
             <Quote className="text-signal/30 mb-3" size={26} aria-hidden="true" />
-
             <p className="font-body text-primary text-base md:text-lg leading-relaxed mb-5">
               &ldquo;{current.message}&rdquo;
             </p>
-
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <TestimonialAvatar src={current.avatar} name={current.name} />
@@ -105,16 +114,13 @@ export function TestimonialStack() {
                   </p>
                 </div>
               </div>
-
-              {/* Dots live INSIDE the card, bottom-right */}
               {ordered.length > 1 && (
-                <div className="flex shrink-0 gap-1.5" role="tablist" aria-label="Testimonial slides">
+                <div className="flex shrink-0 gap-1.5" role="tablist">
                   {ordered.map((t, i) => (
                     <button
                       key={t.id}
                       role="tab"
                       aria-selected={i === index}
-                      aria-label={`Go to testimonial ${i + 1}`}
                       onClick={() => goTo(i)}
                       className={cn(
                         "h-1.5 rounded-full transition-all duration-300",
@@ -129,25 +135,22 @@ export function TestimonialStack() {
         </AnimatePresence>
       </div>
 
-      {/* Side arrows — outside the card, no height impact */}
       {ordered.length > 1 && (
         <>
           <button
             onClick={() => goTo(index - 1)}
-            aria-label="Previous testimonial"
             className="absolute left-[-12px] md:left-[-48px] top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-secondary hover:text-signal hover:border-signal transition-colors"
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={() => goTo(index + 1)}
-            aria-label="Next testimonial"
             className="absolute right-[-12px] md:right-[-48px] top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-secondary hover:text-signal hover:border-signal transition-colors"
           >
             <ChevronRight size={16} />
           </button>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

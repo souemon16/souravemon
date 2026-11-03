@@ -2,21 +2,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-const IMAGE_EXTENSION_PATTERN = /\.(jpe?g|png|webp|avif|gif)(\?.*)?$/i;
+import { useState } from "react";
 
 export function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "production" && src && !IMAGE_EXTENSION_PATTERN.test(src)) {
-      console.warn(
-        `[ProjectImage] "${src}" doesn't look like a direct image link. ` +
-          `If this is from ImageBB, make sure you copied the "Direct link" (starts with i.ibb.co and ends in .jpg/.png), not the page link (ibb.co/...).`
-      );
-    }
-  }, [src]);
 
   if (error || !src) {
     return (
@@ -31,7 +20,6 @@ export function ProjectImage({ src, alt }: { src: string; alt: string }) {
       src={src}
       alt={alt}
       fill
-      unoptimized
       className="object-cover"
       onError={() => setError(true)}
     />

@@ -1,15 +1,7 @@
 // FILE: src/components/services/ServiceCard.tsx
 "use client";
 
-import {
-  Globe,
-  Sparkles,
-  Palette,
-  Clapperboard,
-  PenTool,
-  GraduationCap,
-  type LucideIcon,
-} from "lucide-react";
+import { Globe, Sparkles, Palette, Clapperboard, PenTool, GraduationCap, type LucideIcon } from "lucide-react";
 import { Service } from "@/content/services";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils/cn";
@@ -37,8 +29,9 @@ export function ServiceCard({ service }: { service: Service }) {
           : "border-border hover:border-signal/40"
       )}
     >
+      {/* FIXED: Moved top-4 right-4 so it stays inside the box */}
       {service.featured && (
-        <div className="absolute -top-2.5 right-4">
+        <div className="absolute top-4 right-4 z-10">
           <Badge className="text-[10px]">Featured</Badge>
         </div>
       )}
