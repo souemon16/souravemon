@@ -6,7 +6,8 @@ import { Skills } from "@/components/skills/Skills";
 import { Services } from "@/components/services/Services";
 import { Education } from "@/components/education/Education";
 import { Portfolio } from "@/components/portfolio/Portfolio";
-import { PlaceholderSection } from "@/components/layout/PlaceholderSection";
+import { Testimonials } from "@/components/testimonials/Testimonials";
+import { Contact } from "@/components/contact/Contact";
 
 export default function Home() {
   return (
@@ -19,8 +20,8 @@ export default function Home() {
         <Services />
         <Education />
         <Portfolio />
-        <PlaceholderSection id="testimonials" title="Testimonials" phase="PHASE 10 — UPCOMING" />
-        <PlaceholderSection id="contact" title="Contact" phase="PHASE 12 — UPCOMING" />
+        <Testimonials />
+        <Contact />
       </main>
     </>
   );
