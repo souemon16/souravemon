@@ -110,3 +110,53 @@ body {
     transform: translateY(200%);
   }
 }
+
+
+/* ============================================================
+   Cinematic theme wipe (View Transitions API)
+   Circle expands from the toggle button outward.
+   ============================================================ */
+
+/* Only activate the custom animation when the browser supports it
+   AND the user has not requested reduced motion. */
+@supports (view-transition-name: none) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Tag the root so both old & new snapshots participate */
+    html {
+      view-transition-name: theme-root;
+    }
+
+    /* Hide the browser's default crossfade on root */
+    ::view-transition-old(theme-root),
+    ::view-transition-new(theme-root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+
+    /* Old snapshot sits underneath, stays put */
+    ::view-transition-old(theme-root) {
+      z-index: 1;
+    }
+
+    /* New snapshot clips in as an expanding circle from the button */
+    ::view-transition-new(theme-root) {
+      z-index: 2;
+      animation: theme-circle-in 560ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Night → Day: the new (day) layer expands over night */
+    /* Day → Night: same mechanic, just reversed visually by the theme swap */
+  }
+}
+
+@keyframes theme-circle-in {
+  from {
+    clip-path: circle(0px at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 100%) at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+}
+
+/* Fallback: browsers without View Transitions still get the soft
+   background/color tween already defined on body (350ms). */

@@ -10,8 +10,7 @@ import { scrollToSection } from "@/lib/utils/scroll";
 import { soundManager } from "@/lib/sound/soundManager";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/Button";
-import { LanguageSwitcher } from "@/lib/i18n/LanguageSwitcher";
-import { AITriggerButton } from "@/components/ai/AITriggerButton";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 
 export function Navbar() {
@@ -35,7 +34,6 @@ export function Navbar() {
         )}
       >
         <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-          {/* Logo / wordmark — replaceable via admin panel later */}
           <a
             href="#hero"
             data-magnetic
@@ -52,7 +50,6 @@ export function Navbar() {
             SOURAV
           </a>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
               <a
@@ -64,9 +61,7 @@ export function Navbar() {
                 }}
                 className={cn(
                   "font-mono text-xs uppercase tracking-wide transition-colors",
-                  activeId === item.id
-                    ? "text-signal"
-                    : "text-secondary hover:text-primary"
+                  activeId === item.id ? "text-signal" : "text-secondary hover:text-primary"
                 )}
               >
                 {item.label}
@@ -74,21 +69,13 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Right cluster */}
-          <div className="hidden md:flex items-center gap-3">
-            <LanguageSwitcher />
-            <AITriggerButton />
-            <Button
-              variant="primary"
-              size="sm"
-              data-magnetic
-              onClick={() => handleNavClick("contact")}
-            >
+          <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
+            <Button variant="primary" size="sm" data-magnetic onClick={() => handleNavClick("contact")}>
               Contact
             </Button>
           </div>
 
-          {/* Mobile trigger */}
           <button
             onClick={() => {
               soundManager.click();

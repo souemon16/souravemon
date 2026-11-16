@@ -7,6 +7,7 @@ import { SignalField } from "@/components/effects/SignalField";
 import { CustomCursor } from "@/components/effects/CustomCursor";
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { SkipToContent } from "@/components/layout/SkipToContent";
+import { AIChatWidget } from "@/components/ai/AIChatWidget"; 
 
 export const metadata: Metadata = {
   title: "Sourav Sarker Emon — Creative Technologist",
@@ -48,13 +49,13 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <LanguageProvider>
+
             <SkipToContent />
             <SignalField />
             <CustomCursor />
             <LoadingScreen />
             {children}
-          </LanguageProvider>
+            <AIChatWidget />
         </ThemeProvider>
       </body>
     </html>
